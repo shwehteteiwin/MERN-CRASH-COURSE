@@ -30,8 +30,26 @@ const ProductCard = ({ product }) => {
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const handleUpdateProduct = async (pid, updatedProduct )=>{
-    await updateProduct(pid,updatedProduct);
+    const {success,message} = await updateProduct(pid,updatedProduct);
     onClose();
+if (!success) {
+      toast({
+        title: "Error",
+        description: message,
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    } else {
+      toast({
+        title: "Success",
+        description: "Product updated Successfully",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+
   }
 
   const handleDeleteProduct = async (id) => {
@@ -101,7 +119,7 @@ const ProductCard = ({ product }) => {
                 name="name"
   value={updatedProduct.name}
 
-                onChange={(e)=>setUpdatedProduct({...updateProduct,name: e.target.value})}
+                onChange={(e)=>setUpdatedProduct({...updatedProduct,name: e.target.value})}
               />
 
               <Input
@@ -110,14 +128,14 @@ const ProductCard = ({ product }) => {
                 type="number"
                 
                 value={updatedProduct.price}
-                onChange={(e)=>setUpdatedProduct({...updateProduct,price: e.target.value})}
+                onChange={(e)=>setUpdatedProduct({...updatedProduct,price: e.target.value})}
               />
 
               <Input
                 placeholder="Image URL"
                 name="image"
                 value={updatedProduct.image}
-                onChange={(e)=>setUpdatedProduct({...updateProduct,image: e.target.value})}
+                onChange={(e)=>setUpdatedProduct({...updatedProduct,image: e.target.value})}
               />
             </VStack>
           </ModalBody>
